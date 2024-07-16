@@ -1,0 +1,526 @@
+{
+  "tables": [
+    {
+      "table_name": "attendance",
+      "description": "",
+      "primary_keys": [
+        "link_to_event",
+        "link_to_member"
+      ],
+      "constraints": [
+        {
+          "column": "link_to_event",
+          "join_column": "event_id",
+          "join_table": "event"
+        },
+        {
+          "column": "link_to_member",
+          "join_column": "member_id",
+          "join_table": "member"
+        }
+      ],
+      "columns": [
+        {
+          "name": "link_to_event",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "link_to_member",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "budget",
+      "description": "",
+      "primary_keys": [
+        "budget_id"
+      ],
+      "constraints": [
+        {
+          "column": "link_to_event",
+          "join_column": "event_id",
+          "join_table": "event"
+        }
+      ],
+      "columns": [
+        {
+          "name": "budget_id",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "category",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "spent",
+          "type": "REAL",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "remaining",
+          "type": "REAL",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "amount",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "event_status",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "link_to_event",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "event",
+      "description": "",
+      "primary_keys": [
+        "event_id"
+      ],
+      "constraints": [],
+      "columns": [
+        {
+          "name": "event_id",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "event_name",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "event_date",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "type",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "notes",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "location",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "expense",
+      "description": "",
+      "primary_keys": [
+        "expense_id"
+      ],
+      "constraints": [
+        {
+          "column": "link_to_budget",
+          "join_column": "budget_id",
+          "join_table": "budget"
+        },
+        {
+          "column": "link_to_member",
+          "join_column": "member_id",
+          "join_table": "member"
+        }
+      ],
+      "columns": [
+        {
+          "name": "expense_id",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "expense_description",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "expense_date",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "cost",
+          "type": "REAL",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "approved",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "link_to_member",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "link_to_budget",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "income",
+      "description": "",
+      "primary_keys": [
+        "income_id"
+      ],
+      "constraints": [
+        {
+          "column": "link_to_member",
+          "join_column": "member_id",
+          "join_table": "member"
+        }
+      ],
+      "columns": [
+        {
+          "name": "income_id",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "date_received",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "amount",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "source",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "notes",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "link_to_member",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "major",
+      "description": "",
+      "primary_keys": [
+        "major_id"
+      ],
+      "constraints": [],
+      "columns": [
+        {
+          "name": "major_id",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "major_name",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "department",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "college",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "member",
+      "description": "",
+      "primary_keys": [
+        "member_id"
+      ],
+      "constraints": [
+        {
+          "column": "link_to_major",
+          "join_column": "major_id",
+          "join_table": "major"
+        },
+        {
+          "column": "zip",
+          "join_column": "zip_code",
+          "join_table": "zip_code"
+        }
+      ],
+      "columns": [
+        {
+          "name": "member_id",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "first_name",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "last_name",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "email",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "position",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "t_shirt_size",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "phone",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "zip",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "link_to_major",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "zip_code",
+      "description": "",
+      "primary_keys": [
+        "zip_code"
+      ],
+      "constraints": [],
+      "columns": [
+        {
+          "name": "zip_code",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "type",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "city",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "county",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "state",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "short_state",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    }
+  ],
+  "businessRules": [
+    "High attendance is considered when more than 50% of club members participate",
+    "A major is considered common if at least 20% of members are enrolled in it",
+    "An event is over budget if the 'remaining' amount in the budget table is negative",
+    "An active member is someone who has attended at least 75% of all events",
+    "Sources contributing less than 5% of total income are considered minor sources",
+    "The ratio is calculated by dividing actual expenses by the budgeted amount. A ratio > 1 indicates a budget overrun. Only events with status 'Closed' are counted",
+    "A zip code is considered to have multiple members if it's associated with more than 2 club members",
+    "An expensive category is defined as having a total budget amount exceeding $500 across all events"
+  ],
+  "dbName": "student_club",
+  "dbType": "sqlite"
+}

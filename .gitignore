@@ -1,0 +1,35 @@
+# Node modules
+structure-extraction/node_modules/
+structure-extraction/npm-debug.log
+structure-extraction/yarn-error.log
+structure-extraction/package-lock.json
+structure-extraction/yarn.lock
+
+# Environment variables
+.env
+
+# Logs
+structure-extraction/logs/
+structure-extraction/*.log
+structure-extraction/npm-debug.log*
+structure-extraction/yarn-debug.log*
+structure-extraction/yarn-error.log*
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# IDE specific
+.vscode/
+.idea/
+
+# Database files
+*.sqlite
+*.db
+
+# Output files
+structure-extraction/outputs
+
+# Virtual environement
+python-examples/queryx-venv/
+

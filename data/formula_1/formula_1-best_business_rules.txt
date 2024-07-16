@@ -1,0 +1,7 @@
+A dominant season is defined as winning more than 10 races in a single year
+A high-speed track is defined as having an average fastest lap speed exceeding 230 km/h
+Consistent performance is defined as finishing in the points (top 10) in at least 90% of the races in a season
+A pit stop expert is defined as a driver who has completed at least 3 pit stops in a race, with an average duration of less than 23 seconds
+A closely contested race is defined as having the top 10 qualifiers within 1 second of each other in Q3
+A 'comeback king' is defined as a driver who has finished in the top 3 after starting from 10th position or lower on the grid at least 5 times in their career
+A highly competitive season is defined as one where the difference in points between the champion and the runner-up is less than 5% of the total points scored by the champion

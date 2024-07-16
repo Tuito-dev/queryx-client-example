@@ -1,0 +1,76 @@
+body {
+  display: flex;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  padding-right: 0px!important;
+  padding-left: 0px!important;
+  margin-left: 0px!important;
+  margin-bottom: 0px!important;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+.authorization {
+  float: left;
+  margin: 10px;
+}
+
+.drawer {
+  background-color: #f0f0f0;
+  border-right: 1px solid #ccc;
+  padding-top: 20px;
+  overflow-y: auto;
+  height: 100vh!important;
+}
+
+.drawer-btn:hover {
+  background-color: #ccc;
+}
+
+.main-content {
+  margin-left: 200px; /* Adjust based on drawer width */
+  padding: 20px;
+}
+
+.page {
+  display: none;
+}
+
+.error-message {
+  color: red;
+}
+
+.query-result {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.justify-center {
+  justify-content: center;
+}
+.container-fluid {
+  margin-bottom: 10px;
+}
+
+.result {
+  max-height: 30vh;
+  max-width: 80%!important;
+}
+
+.result-box:not(:empty) {
+  padding: 0.5rem!important;
+  border-radius: 0.5rem;
+  background-color: #b6b6b6bb;
+}
+
+.result-box:empty ~ .validation-box{
+  visibility: hidden;
+  height: 0px!important;
+}

@@ -1,0 +1,8 @@
+High attendance is considered when more than 50% of club members participate
+A major is considered common if at least 20% of members are enrolled in it
+An event is over budget if the 'remaining' amount in the budget table is negative
+An active member is someone who has attended at least 75% of all events
+Sources contributing less than 5% of total income are considered minor sources
+The ratio is calculated by dividing actual expenses by the budgeted amount. A ratio > 1 indicates a budget overrun. Only events with status 'Closed' are counted
+A zip code is considered to have multiple members if it's associated with more than 2 club members
+An expensive category is defined as having a total budget amount exceeding $500 across all events

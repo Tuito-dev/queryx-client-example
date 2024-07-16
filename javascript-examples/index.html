@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueryX Backend Example</title>
+    <!-- Linking external stylesheets and scripts -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="row container-fluid">
+    <!-- Navigation drawer -->
+    <div class="col-3 drawer">
+        <h5 class="text-success">QueryX Backend Example</h5>
+        <!-- Drawer buttons for different pages -->
+        <button class="btn btn-default row container-fluid text-left drawer-btn" data-page="page-home">Home</button>
+        <button class="btn btn-default row container-fluid text-left drawer-btn" data-page="page0">Get Databases Infos</button>
+        <button class="btn btn-default row container-fluid text-left drawer-btn" data-page="page1">Set Database</button>
+        <button class="btn btn-default row container-fluid text-left drawer-btn" data-page="page2">Get Suggested Questions</button>
+        <button class="btn btn-default row container-fluid text-left drawer-btn" data-page="page3">Generate Query</button>
+        <button class="btn btn-default row container-fluid text-left drawer-btn" data-page="page4">Query with Context</button>
+        <button class="btn btn-default row container-fluid text-left drawer-btn" data-page="page5">Fix Query</button>
+        <button class="btn btn-default row container-fluid text-left drawer-btn" data-page="page6">Handle Database</button>
+    </div>
+
+    <!-- Main content area -->
+    <main id="main-content" class="col" style="max-width: 75%!important; max-height: 100vh!important; overflow: auto;">
+        <!-- Authorization Key section -->
+        <section id="authorization" class="authorization row container-fluid padding-base-vertical">
+            <h2 class="row container-fluid text-info">Authorization Key</h2>
+            <div class="row container-fluid">
+                <input class="form-control col-9" type="text" id="apiKeyInput" placeholder="Enter API Key">
+            </div>
+            <p id="errorApiKey" class="error-message row container-fluid"></p>
+        </section>
+
+        <!-- Database UUID section -->
+        <section id="DatabaseUuid" class="row container-fluid padding-base-vertical">
+            <h2 class="row container-fluid text-info">Database UUID</h2>
+            <div class="row container-fluid">
+                <input class="form-control col-9" type="text" id="dbUuid" placeholder="Enter Database UUID">
+            </div>
+            <p id="errorDbUuid" class="error-message row container-fluid"></p>
+        </section>
+
+        <!-- Page Home: home page with workflow -->
+        <section id="page-home" class="page row container-fluid">
+          <h2 class="row container-fluid text-info justify-center">Welcome to QueryX Javascript Example</h2>
+          <h4 class="row container-fluid text-primary justify-center">API Workflow</h4>
+          <div class="workflow-steps row container-fluid justify-center">
+            <ol class="workflow-list">
+              <li>
+                <strong>Register a Database</strong>: Register the database structure using <code>/set-db</code>.
+              </li>
+              <li>
+                <strong>Update Database</strong>: If needed, update the database structure using <code>/update-db/{dbUuid}</code>.
+              </li>
+              <li>
+                <strong>Translate Queries</strong>: Use <code>/generate-query/{dbUuid}</code> to translate natural language questions to SQL queries.
+              </li>
+              <li>
+                <strong>Fix Queries</strong>: Correct any SQL query issues using <code>/fix-query/{dbUuid}</code>.
+              </li>
+              <li>
+                <strong>Validate/Reject Queries</strong>: Provide feedback on the queries using <code>/validate-query/{dbUuid}</code> and <code>/reject-query/{dbUuid}</code>.
+              </li>
+              <li>
+                <strong>Manage Database Cache</strong>: Delete cache as necessary with <code>/delete-db-cache/{dbUuid}</code>.
+              </li>
+              <li>
+                <strong>Unregister Database</strong>: Remove the database structure using <code>/delete-db/{dbUuid}</code>.
+              </li>
+            </ol>
+          </div>
+          <div class="row container-fluid justify-center">
+            <img src="https://www.plantuml.com/plantuml/png/XLHBZzem4BxxLtn7E13KTnMaTbT0AwHjkm-sFPju2EuQczeJTb7L_rux6v5G5FM8vvlv7ipa8h3qN6sDOCs6S7czmDHjTuQOyCFvXxLnZqBKA27ogT5a6GlBv6N1sjb9V7sHuPPA7U8Z96QIvKe6ceZH1-JNt-wM60VYaLfDX7LCyBhSSDwsy8QWcYO4zbN1bISXz1g3hqGAx53j8e9Ee1-7wQV5u41XA83yPORx6jQH0BGYdcT47UFVQdLVQVKdrRkIclOUGMG2OM3TK91LUXsDlygmzD86axfkAlAQGjTsIPPyulmLQuSERPUqdM1bv946HjgoaYKXjeKKSaWHtDrSfOV4yPpD8eHOnwFc3Mg2iqHUP_YadrfbtJJM-gcHrPV6r7bF1H-93z0rutaGISrdlIUiYTHA5Wz9hzxklDkV_Kq9UwaKYcQwfr0P_XS5v6yoV9T6gvDiWQw7VLC_Du8JA-sWIDBwYR3MIitvDctopoYhZz7NrV_oDKFEs59Sn-rvb-6BjB9iznLJMMoQmvdDh-RBESQA3DLREofIiMU9PZKADGGom5918SZ8AlBtyIwiRwxjoDN3qZF_bhPkJxsd6jZjn4KqbhuaVm40" alt="API Complete Workflow Diagram" class="workflow-diagram">
+          </div>
+        </section>
+
+        <!-- Page 0: Get Database Infos -->
+        <section id="page0" class="page row container-fluid">
+            <h2 class="row container-fluid text-info justify-center">Get Database Infos</h2>
+            <div class="set-database row container-fluid justify-center">
+                <button id="getDbListBtn" class="btn btn-info">Get Registered Databases List</button>
+                <pre id="getDbListResult" class="result row container-fluid result-box"></pre>
+                <button id="getDbStructureBtn" class="btn btn-info">Get Database Structure By UUID</button>
+                <pre id="getDbStructureResult" class="result row container-fluid result-box"></pre>
+            </div>
+        </section>
+
+        <!-- Page 1: Set Database -->
+        <section id="page1" class="page row container-fluid">
+            <h2 class="row container-fluid text-info justify-center">Set Database</h2>
+            <h6 class="row container-fluid text-dark">Required Format:</h6>
+            <pre class="row container-fluid text-dark">
+            { 
+              dbType,  dbName,  
+              tables: { 
+                constraints: [], description, table_name, primary_keys: [], 
+                columns: { 
+                  name, type, nullable, labels, description, 
+                  constraints: { 
+                    column, join_column, join_table 
+                  }[], 
+                  values: [] 
+                }[] 
+              }[], 
+              businessRules: [] 
+            }
+            </pre>
+            <textarea id="structureJsonInput" class="form-control row container-fluid" rows="15" placeholder="Enter JSON data"></textarea>
+            <p id="structureErrorText" class="error-message row container-fluid"></p>
+            <div class="row container-fluid">
+                <div class="col">
+                    <button id="setDatabaseBtn" class="btn btn-info">Set Database and Get UUID</button>
+                </div>
+                <p id="dbUuidResult" class="dbuuid-result col result-box"></p>
+            </div>
+        </section>
+
+        <!-- Page 2: Get Suggested Questions -->
+        <section id="page2" class="page row container-fluid">
+            <h2 class="row container-fluid text-info justify-center">Get Suggested Questions</h2>
+            <h6 class="row container-fluid text-dark">Enter your pre-question here:</h6>
+            <textarea id="suggestedquestionInput" class="form-control row container-fluid" rows="3" placeholder="List first"></textarea>
+            <p id="suggestedErrorText" class="error-message row container-fluid"></p>
+            <div class="row container-fluid">
+                <div class="col">
+                    <button id="suggestedBtn" class="btn btn-info">Get Questions</button>
+                </div>
+            </div>
+            <pre id="suggestedResult" class="result row container-fluid result-box"></pre>
+        </section>
+
+        <!-- Page 3: Generate Query -->
+        <section id="page3" class="page row container-fluid">
+            <h2 class="row container-fluid text-info justify-center">Generate Query</h2>
+            <h6 class="row container-fluid text-dark">Enter your question here:</h6>
+            <textarea id="questionInput" class="form-control row container-fluid" rows="3" placeholder="List first 10 users"></textarea>
+            <p id="queryErrorText" class="error-message row container-fluid"></p>
+            <div class="row container-fluid">
+                <div class="col">
+                    <button id="getQueryBtn" class="btn btn-info">Generate Query</button>
+                </div>
+            </div>
+            <pre id="queryResult" class="result row container-fluid result-box"></pre>
+            <div class="row container-fluid validation-box">
+                <div class="col">
+                    <button id="getQueryBtnValidate" class="btn btn-success">Validate Query</button>
+                    <button id="getQueryBtnReject" class="btn btn-danger">Reject Query</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 4: Query with Context -->
+        <section id="page4" class="page row container-fluid">
+            <h2 class="row container-fluid text-info justify-center">Query with Context History</h2>
+            <h6 class="row container-fluid text-dark">
+                Enter your question and the previous questions you want to keep in context <br>
+                History format:  {question: string, query: string}[]
+            </h6>
+            <textarea id="QueryContextInputQuestion" class="form-control row container-fluid" rows="2" placeholder="Question - example: list the 5 oldest of them"></textarea>
+            <textarea id="QueryContextInputHistory" class="form-control row container-fluid" rows="10"></textarea>
+            <p id="QueryContextErrorText" class="error-message row container-fluid"></p>
+            <div class="row container-fluid">
+                <div class="col">
+                    <button id="QueryContextBtn" class="btn btn-info">Get Query with Context</button>
+                </div>
+            </div>
+            <pre id="QueryContextResult" class="result row container-fluid result-box"></pre>
+        </section>
+
+        <!-- Page 5: Fix Query -->
+        <section id="page5" class="page row container-fluid">
+            <h2 class="row container-fluid text-info justify-center">Fix Query</h2>
+            <h6 class="row container-fluid text-dark">
+                Enter the question generating error, the error message (when you tried to execute this query), and the query previously generated:
+            </h6>
+            <textarea id="fixQueryInputQuestion" class="form-control row container-fluid" rows="2" placeholder="Previous Question"></textarea>
+            <textarea id="fixQueryInputQuery" class="form-control row container-fluid" rows="2" placeholder="Previous Query"></textarea>
+            <textarea id="fixQueryInputError" class="form-control row container-fluid" rows="2" placeholder="Previous Error"></textarea>
+            <p id="fixQueryErrorText" class="error-message row container-fluid"></p>
+            <div class="row container-fluid">
+                <div class="col">
+                    <button id="fixQueryBtn" class="btn btn-info">Fix Query</button>
+                </div>
+            </div>
+            <pre id="fixQueryResult" class="result row container-fluid result-box"></pre>
+        </section>
+
+        <!-- Page 6: Handle Database -->
+        <section id="page6" class="page row container-fluid">
+            <h2 class="row container-fluid text-info justify-center">Handle Database</h2>
+            <h6 class="row container-fluid text-danger">
+                These actions are irreversible. Please be cautious!
+            </h6>
+            <div class="set-database row container-fluid justify-center">
+                <div class="row container-fluid">
+                    <div class="col">
+                        <button id="handleDBBtnCache" class="btn btn-warning">Delete Database Cache</button>
+                        <button id="handleDBBtnDelete" class="btn btn-danger">Delete Database</button>
+                    </div>
+                </div>
+                <pre id="handleDBResult" class="result row container-fluid result-box"></pre>
+            </div>
+        </section>
+    </main>
+
+    <!-- Linking JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>

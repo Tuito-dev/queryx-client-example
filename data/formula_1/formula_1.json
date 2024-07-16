@@ -1,0 +1,1004 @@
+{
+  "tables": [
+    {
+      "table_name": "circuits",
+      "description": "",
+      "primary_keys": [
+        "circuitId"
+      ],
+      "constraints": [],
+      "columns": [
+        {
+          "name": "circuitId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "circuitRef",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "location",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "country",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "lat",
+          "type": "REAL",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "lng",
+          "type": "REAL",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "alt",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "constructorResults",
+      "description": "",
+      "primary_keys": [
+        "constructorResultsId"
+      ],
+      "constraints": [
+        {
+          "column": "raceId",
+          "join_column": "raceId",
+          "join_table": "races"
+        },
+        {
+          "column": "constructorId",
+          "join_column": "constructorId",
+          "join_table": "constructors"
+        }
+      ],
+      "columns": [
+        {
+          "name": "constructorResultsId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "raceId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "constructorId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "points",
+          "type": "REAL",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "constructorStandings",
+      "description": "",
+      "primary_keys": [
+        "constructorStandingsId"
+      ],
+      "constraints": [
+        {
+          "column": "raceId",
+          "join_column": "raceId",
+          "join_table": "races"
+        },
+        {
+          "column": "constructorId",
+          "join_column": "constructorId",
+          "join_table": "constructors"
+        }
+      ],
+      "columns": [
+        {
+          "name": "constructorStandingsId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "raceId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "constructorId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "points",
+          "type": "REAL",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "position",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "positionText",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "wins",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "constructors",
+      "description": "",
+      "primary_keys": [
+        "constructorId"
+      ],
+      "constraints": [],
+      "columns": [
+        {
+          "name": "constructorId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "constructorRef",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "nationality",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "driverStandings",
+      "description": "",
+      "primary_keys": [
+        "driverStandingsId"
+      ],
+      "constraints": [
+        {
+          "column": "raceId",
+          "join_column": "raceId",
+          "join_table": "races"
+        },
+        {
+          "column": "driverId",
+          "join_column": "driverId",
+          "join_table": "drivers"
+        }
+      ],
+      "columns": [
+        {
+          "name": "driverStandingsId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "raceId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "driverId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "points",
+          "type": "REAL",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "position",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "positionText",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "wins",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "drivers",
+      "description": "",
+      "primary_keys": [
+        "driverId"
+      ],
+      "constraints": [],
+      "columns": [
+        {
+          "name": "driverId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "driverRef",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "number",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "code",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "forename",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "surname",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "dob",
+          "type": "DATE",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "nationality",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "lapTimes",
+      "description": "",
+      "primary_keys": [
+        "raceId",
+        "driverId",
+        "lap"
+      ],
+      "constraints": [
+        {
+          "column": "raceId",
+          "join_column": "raceId",
+          "join_table": "races"
+        },
+        {
+          "column": "driverId",
+          "join_column": "driverId",
+          "join_table": "drivers"
+        }
+      ],
+      "columns": [
+        {
+          "name": "raceId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "driverId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "lap",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "position",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "time",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "milliseconds",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "pitStops",
+      "description": "",
+      "primary_keys": [
+        "raceId",
+        "driverId",
+        "stop"
+      ],
+      "constraints": [
+        {
+          "column": "raceId",
+          "join_column": "raceId",
+          "join_table": "races"
+        },
+        {
+          "column": "driverId",
+          "join_column": "driverId",
+          "join_table": "drivers"
+        }
+      ],
+      "columns": [
+        {
+          "name": "raceId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "driverId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "stop",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "lap",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "time",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "duration",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "milliseconds",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "qualifying",
+      "description": "",
+      "primary_keys": [
+        "qualifyId"
+      ],
+      "constraints": [
+        {
+          "column": "raceId",
+          "join_column": "raceId",
+          "join_table": "races"
+        },
+        {
+          "column": "driverId",
+          "join_column": "driverId",
+          "join_table": "drivers"
+        },
+        {
+          "column": "constructorId",
+          "join_column": "constructorId",
+          "join_table": "constructors"
+        }
+      ],
+      "columns": [
+        {
+          "name": "qualifyId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "raceId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "driverId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "constructorId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "number",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "position",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "q1",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "q2",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "q3",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "races",
+      "description": "",
+      "primary_keys": [
+        "raceId"
+      ],
+      "constraints": [
+        {
+          "column": "year",
+          "join_column": "year",
+          "join_table": "seasons"
+        },
+        {
+          "column": "circuitId",
+          "join_column": "circuitId",
+          "join_table": "circuits"
+        }
+      ],
+      "columns": [
+        {
+          "name": "raceId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "year",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "round",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "circuitId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "date",
+          "type": "DATE",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "time",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "results",
+      "description": "",
+      "primary_keys": [
+        "resultId"
+      ],
+      "constraints": [
+        {
+          "column": "raceId",
+          "join_column": "raceId",
+          "join_table": "races"
+        },
+        {
+          "column": "driverId",
+          "join_column": "driverId",
+          "join_table": "drivers"
+        },
+        {
+          "column": "constructorId",
+          "join_column": "constructorId",
+          "join_table": "constructors"
+        },
+        {
+          "column": "statusId",
+          "join_column": "statusId",
+          "join_table": "status"
+        }
+      ],
+      "columns": [
+        {
+          "name": "resultId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "raceId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "driverId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "constructorId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "number",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "grid",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "position",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "positionText",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "positionOrder",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "points",
+          "type": "REAL",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "laps",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "time",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "milliseconds",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "fastestLap",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "rank",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "fastestLapTime",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "fastestLapSpeed",
+          "type": "TEXT",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "statusId",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "seasons",
+      "description": "",
+      "primary_keys": [
+        "year"
+      ],
+      "constraints": [],
+      "columns": [
+        {
+          "name": "year",
+          "type": "INTEGER",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    },
+    {
+      "table_name": "status",
+      "description": "",
+      "primary_keys": [
+        "statusId"
+      ],
+      "constraints": [],
+      "columns": [
+        {
+          "name": "statusId",
+          "type": "INTEGER",
+          "nullable": true,
+          "description": "",
+          "labels": "",
+          "values": []
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "nullable": false,
+          "description": "",
+          "labels": "",
+          "values": []
+        }
+      ]
+    }
+  ],
+  "businessRules": [
+    "A dominant season is defined as winning more than 10 races in a single year",
+    "A high-speed track is defined as having an average fastest lap speed exceeding 230 km/h",
+    "Consistent performance is defined as finishing in the points (top 10) in at least 90% of the races in a season",
+    "A pit stop expert is defined as a driver who has completed at least 3 pit stops in a race, with an average duration of less than 23 seconds",
+    "A closely contested race is defined as having the top 10 qualifiers within 1 second of each other in Q3",
+    "A 'comeback king' is defined as a driver who has finished in the top 3 after starting from 10th position or lower on the grid at least 5 times in their career",
+    "A highly competitive season is defined as one where the difference in points between the champion and the runner-up is less than 5% of the total points scored by the champion"
+  ],
+  "dbName": "formula_1",
+  "dbType": "sqlite"
+}
