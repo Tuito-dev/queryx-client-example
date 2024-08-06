@@ -17,7 +17,7 @@
 
 ## Introduction
 
-This Python script is a QueryX client example. It demonstrates how to interact with the QueryX backend API to finally generate SQL queries from questions asked in natural language.
+These two Python scripts are two examples of QueryX client. They demonstrate how to interact with the QueryX backend API to finally generate SQL queries from questions asked in natural language.
 
 ## Installation
 
@@ -45,9 +45,12 @@ This Python script is a QueryX client example. It demonstrates how to interact w
 
 ## Usage
 
-This project offers two ways to explore its functionalities: a [quick start](#quick-start) example and a [more complete](#complete-example) example showcasing QueryX BE API usage.
+Two clients are available:
 
-You can use either the [provided example databases](#example-datasets) or apply it to your [own databases](#use-your-own-database).
+* queryx_quickstart_client.py shows how to go straigth to query generations
+* queryx_interactive_client.py allows to explore each API of QueryX backend
+
+You can either use the [provided example databases](#example-datasets) or your [own databases](#use-your-own-database).
 
 ### Quick start
 
@@ -59,12 +62,12 @@ You can use either the [provided example databases](#example-datasets) or apply 
 2. Run the following:
 
 ```sh
-python queryx_quickstart_example.py
+python queryx_quickstart_client.py
 ```
 
 Follow the instructions displayed in the script's output to ask your questions in natural language.
 
-### Complete example
+### Complete API interaction
 
 1. **Set your API key**: Please export your QueryX API Key as follows:
     ```sh
@@ -74,7 +77,7 @@ Follow the instructions displayed in the script's output to ask your questions i
 2. Run the following:
 
 ```sh
-python python-examples/queryx_client.py
+python python-examples/queryx_interactive_client.py
 ```
 
 For detailed instructions on using the complete example, refer to the section on [menu navigation part](#menu-navigation).
@@ -85,7 +88,7 @@ For detailed instructions on using the complete example, refer to the section on
 
 2. **Run**:
 
-  - **Quick start mode**: please point to your generated database structured JSON format [in this line](https://github.com/Tuito-dev/queryx-client-example/blob/main/python-examples/queryx_quickstart_example.py#L89), then follow the [steps here](#quick-start).
+  - **Quick start mode**: please point to your generated database structured JSON format [in this line](https://github.com/Tuito-dev/queryx-client-example/blob/main/python-examples/queryx_quickstart_client.py#L20), then follow the [steps here](#quick-start).
 
   - **Complete mode**: follow the [steps here](#complete-example).
 
