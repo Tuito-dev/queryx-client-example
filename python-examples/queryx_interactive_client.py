@@ -45,7 +45,7 @@ PRINT_TRACE = False
 PRINT_DEBUG = False
 PRINT_INFO = True
 PRINT_ERROR = True
-PRINT_HTTP = True
+PRINT_HTTP = False
 
 def print_trace(*args) -> None:
     """ Basic print function """
@@ -85,19 +85,11 @@ def get_user_input_string(user_input: str) -> str:
 ### CONSTANTS ###
 #################
 
+BACKEND_SERVER_URL = "https://api-prod.queryx.eu/be"
 QUERYX_WEBSITE = "https://queryx.eu/"
 QUERYX_AUTH_SERVER ="https://app.queryx.eu/#/profil#ppage-api-key"
-DEFAULT_CONFIG_FILE = "./queryx_client_config.yaml"
 SCHEMA_SEMANTIC_KEY = 'businessRules'
-EMPTY_AUTHORIZATION_TOKEN = "APIKEY.00000000000000000000000000000000"
 DATABASE_FOLDER = '../data'
-
-##########################
-### BACKEND PARAMETERS ###
-##########################
-
-BACKEND_SERVER_URL = "https://api-prod.queryx.eu/be"
-AUTHORIZATION_TOKEN = EMPTY_AUTHORIZATION_TOKEN
 
 ###############################
 ### STATE MACHINE VARIABLES ###
@@ -144,10 +136,10 @@ def handle_query(question: str, response: dict) -> None:
 
 HTTP_REQUEST_SESSION = None
 
-def init_requests():
+def init_requests(auth_token):
     """ Prepare HTTP requests """
 
-    auth_header = {"authorization": AUTHORIZATION_TOKEN}
+    auth_header = {"authorization": auth_token}
 
     global HTTP_REQUEST_SESSION
     HTTP_REQUEST_SESSION = requests.Session()
@@ -693,6 +685,10 @@ QUERYX_CLIENT_MENU_DEFINITION = {
     ]),
 }
 
+#######################
+### MENU MANAGEMENT ###
+#######################
+
 QUERYX_CLIENT_MENU_LIVE = { }
 SUBMENU_KEY = SUBMENU_KEY_MAIN
 
@@ -703,6 +699,8 @@ def preview_description(key: str) -> str:
 
 def build_menu() -> None:
     """ Build the QueryX client live menu following menu definition """
+
+    add_database_list_to_menu(DATABASE_FOLDER)
 
     for submenu_key, submenu in QUERYX_CLIENT_MENU_DEFINITION.items():
         menu_item_list = submenu.keys()
@@ -721,10 +719,6 @@ def build_semantics_submenu() -> None:
     QUERYX_CLIENT_MENU_LIVE[SUBMENU_KEY_SEMANTICS] = TerminalMenu(menu_item_list,
                                                                   raise_error_on_interrupt=True,
                                                                   cycle_cursor=False)
-
-###############################
-### CONFIGURATION FUNCTIONS ###
-###############################
 
 def add_semantic_list_to_menu() -> None:
     """ Retrieve the list of semantic rules available in of current database schema
@@ -770,20 +764,6 @@ def add_database_list_to_menu(database_folder: str) -> None:
             ENDMENUITEM_KEY_M: SUBMENU_KEY_MAIN,
         }
 
-def setup() -> None:
-    """ Setup the QueryX configuration """
-
-    add_database_list_to_menu(DATABASE_FOLDER)
-
-    global BACKEND_SERVER_URL
-    global AUTHORIZATION_TOKEN
-    AUTHORIZATION_TOKEN = os.environ.get('QUERYX_API_KEY', '')
-    print_debug("server URL =", BACKEND_SERVER_URL)
-    print_debug("auth token =", AUTHORIZATION_TOKEN)
-
-    if AUTHORIZATION_TOKEN == EMPTY_AUTHORIZATION_TOKEN:
-        print_error("create an account on", QUERYX_AUTH_SERVER, "to get an API key")
-
 def get_menu_item_key(submenu: OrderedDict, index: int) -> str:
     """ Get key in sub-menu definition (ordered dictionary) based on index """
 
@@ -803,12 +783,10 @@ def read_user_input(prompt: str) -> str:
     """ Read user input from standard input """
     return input("$ " + prompt + " > ")
 
-def main(database_file: str=None) -> None:
+def menu_loop(database_file: str=None) -> None:
     """ Main menu loop """
 
-    setup()
     build_menu()
-    init_requests()
 
     if database_file is not None:
         CURRENT_DATABASE.file = database_file
@@ -871,11 +849,24 @@ if __name__ == "__main__":
     print("   ### Tuito's QueryX client ###")
     print("   #############################")
     print(c.Fore.RESET)
+
+    # Claim your API key at https://app.queryx.eu/#/profil#ppage-api-key
+    # and export to environment
+    authorization_token = os.environ.get('QUERYX_API_KEY', '')
+    if not authorization_token:
+        print_error("'QUERYX_API_KEY' not set")
+        print("\nPlease export your QueryX API key as 'QUERYX_API_KEY' environment variable")
+        print("  export QUERYX_API_KEY=<your API key>\n")
+        exit(1)
+
     print("Please visit", c.Fore.CYAN + QUERYX_WEBSITE + c.Fore.RESET)
     print()
 
+    init_requests(authorization_token)
+    PRINT_HTTP = True
+
     try:
-        main(command_line_args.database)
+        menu_loop(command_line_args.database)
     except KeyboardInterrupt:
         print(c.Fore.RED + "user interruption" + c.Fore.RESET)
 
