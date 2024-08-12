@@ -85,11 +85,13 @@ def get_user_input_string(user_input: str) -> str:
 ### CONSTANTS ###
 #################
 
-BACKEND_SERVER_URL = "https://api-prod.queryx.eu/be"
-QUERYX_WEBSITE = "https://queryx.eu/"
-QUERYX_AUTH_SERVER ="https://app.queryx.eu/#/profil#ppage-api-key"
 SCHEMA_SEMANTIC_KEY = 'businessRules'
 DATABASE_FOLDER = '../data'
+BACKEND_SERVER_URL = "https://api-prod.queryx.eu/be"
+QUERYX_WEBSITE = "https://queryx.eu/"
+QUERYX_SUBSCRIPTION = "https://app.queryx.eu/#/profil#ppage-api-key"
+
+AUTHORIZATION_TOKEN = "APIKEY.00000000000000000000000000000000"
 
 ###############################
 ### STATE MACHINE VARIABLES ###
@@ -185,7 +187,8 @@ def send_request(method: str,
             print_response(json.dumps(answer, indent=2))
         else:
             print_error(f"{method}({endpoint}) request returned {response.status_code}")
-            print_error(f"response = {json.dumps(response.json(), indent=2)}")
+            try: print_error(f"response = {json.dumps(response.json(), indent=2)}")
+            except: pass
     except requests.exceptions.ConnectionError as request_error:
         print_error(f"{method}({endpoint}) request failed")
         print_error(request_error)
@@ -827,6 +830,26 @@ def menu_loop(database_file: str=None) -> None:
             SUBMENU_KEY = submenu_item[ENDMENUITEM_KEY_M]
             print_debug("go to submenu", SUBMENU_KEY)
 
+#####################
+### AUTHORIZATION ###
+#####################
+
+def get_authorization_token() -> str:
+    """ Get authorization token from environment variable """
+
+    auth_token = os.environ.get('QUERYX_API_KEY', '')
+    if auth_token:
+        # Client authorized
+        print("Please visit", c.Fore.CYAN + QUERYX_WEBSITE + c.Fore.RESET)
+    else:
+        # Client not authorized (duh)
+        print_error("'QUERYX_API_KEY' not set")
+        print("\nPlease claim your QueryX API key at", QUERYX_SUBSCRIPTION)
+        print("Then export as 'QUERYX_API_KEY' environment variable")
+        print("  $ export QUERYX_API_KEY=<your API key>")
+    print()
+    return auth_token
+
 ###################
 ### SCRIPT MAIN ###
 ###################
@@ -845,30 +868,20 @@ if __name__ == "__main__":
     command_line_args = parser.parse_args()
 
     print(c.Fore.MAGENTA)
-    print("   #############################")
-    print("   ### Tuito's QueryX client ###")
-    print("   #############################")
+    print("   #########################################")
+    print("   ### Tuito's QueryX interactive client ###")
+    print("   #########################################")
     print(c.Fore.RESET)
 
-    # Claim your API key at https://app.queryx.eu/#/profil#ppage-api-key
-    # and export to environment
-    authorization_token = os.environ.get('QUERYX_API_KEY', '')
-    if not authorization_token:
-        print_error("'QUERYX_API_KEY' not set")
-        print("\nPlease export your QueryX API key as 'QUERYX_API_KEY' environment variable")
-        print("  export QUERYX_API_KEY=<your API key>\n")
-        exit(1)
+    authorization_token = get_authorization_token()
+    if authorization_token:
 
-    print("Please visit", c.Fore.CYAN + QUERYX_WEBSITE + c.Fore.RESET)
-    print()
+        init_requests(authorization_token)
+        PRINT_HTTP = True
 
-    init_requests(authorization_token)
-    PRINT_HTTP = True
+        try:
+            menu_loop(command_line_args.database)
+        except KeyboardInterrupt:
+            print(c.Fore.RED + "user interruption" + c.Fore.RESET)
 
-    try:
-        menu_loop(command_line_args.database)
-    except KeyboardInterrupt:
-        print(c.Fore.RED + "user interruption" + c.Fore.RESET)
-
-    print("\nexit", program_name, "program, bye\n")
-    sys.exit(0)
+        print("\nexit", program_name, "program, bye\n")
