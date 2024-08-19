@@ -4,28 +4,26 @@
 Client code example showing how to interact with Tuito's QueryX backend
 """
 
-import os
 import sys
 import json
 
-from queryx_interactive_client import DATABASE_FOLDER, get_authorization_token
-from queryx_interactive_client import c, print_info, print_error, get_name
-from queryx_interactive_client import init_requests, send_request
+from queryx_client_common import c, print_info, print_error, get_name
+from queryx_client_common import get_authorization_token, get_predefined_database_filename
+from queryx_client_common import init_requests, send_request
 
 #################
 ### CONSTANTS ###
 #################
 
 QUERYX_PROMPT = "Enter your question > "
-DATABASE_STRUCTURE_FILE = os.path.join(DATABASE_FOLDER, 'student_club', 'student_club.json')
 
-#########################
-### PROCESS FUNCTIONS ###
-#########################
+#############################
+### QUERY GENERATION LOOP ###
+#############################
 
 def generate_queries(db_structure: dict, db_name: str) -> None:
     """
-    Connect to QuaryX backend, and enter an infinite loop of question / SQL query generations
+    Connect to QueryX backend, and enter an infinite loop of question / SQL query generations
     """
 
     print_info("Check QueryX backend server is reachable")
@@ -88,14 +86,15 @@ if __name__ == "__main__":
     authorization_token = get_authorization_token()
     if authorization_token:
 
-        with open(DATABASE_STRUCTURE_FILE, encoding='utf-8') as json_file:
+        db_filename = get_predefined_database_filename(sys.argv)
+        with open(db_filename, encoding='utf-8') as json_file:
             database_structure = json.load(json_file)
 
         init_requests(authorization_token)
         PRINT_HTTP = False
 
         try:
-            generate_queries(database_structure, get_name(DATABASE_STRUCTURE_FILE))
+            generate_queries(database_structure, get_name(db_filename))
         except KeyboardInterrupt:
             print(c.Fore.RED + "user interruption" + c.Fore.RESET)
 
