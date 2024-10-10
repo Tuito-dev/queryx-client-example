@@ -8,10 +8,6 @@ import os
 import sys
 import glob
 import json
-import yaml
-import http
-import urllib
-import requests
 import argparse
 import datetime
 
@@ -19,85 +15,16 @@ from collections import OrderedDict
 
 from simple_term_menu import TerminalMenu
 
-#######################
-### PRINT UTILITIES ###
-#######################
-
-try:
-    import colorama as c
-except ModuleNotFoundError:
-    class c:
-        class Fore:
-            GREEN = ""
-            YELLOW = ""
-            RED = ""
-            CYAN = ""
-            MAGENTA = ""
-        class Style:
-            RESET = ""
-
-PRINT_HEADER = "QueryX Client"
-
-# This print management is really basic & naive (sorry about that)
-# It should be improved, use logging ?
-
-PRINT_TRACE = False
-PRINT_DEBUG = False
-PRINT_INFO = True
-PRINT_ERROR = True
-PRINT_HTTP = True
-
-def print_trace(*args) -> None:
-    """ Basic print function """
-    if PRINT_TRACE:
-        print(PRINT_HEADER + " TRACE:", *args)
-
-def print_debug(*args) -> None:
-    """ Basic print function """
-    if PRINT_DEBUG:
-        print(PRINT_HEADER + " DEBUG:", *args)
-
-def print_info(*args) -> None:
-    """ Basic print function """
-    if PRINT_INFO:
-        print(PRINT_HEADER + ":", *args)
-
-def print_error(*args) -> None:
-    """ Basic print function """
-    if PRINT_ERROR:
-        print(PRINT_HEADER + c.Fore.RED + " ERROR:" + c.Fore.RESET, *args)
-
-def print_request(*args) -> None:
-    """ Basic print function """
-    if PRINT_HTTP:
-        print(PRINT_HEADER + c.Fore.YELLOW + " REQ:" + c.Fore.RESET, *args)
-
-def print_response(*args) -> None:
-    """ Basic print function """
-    if PRINT_HTTP:
-        print(PRINT_HEADER +  c.Fore.YELLOW + " RES:    " + c.Fore.RESET, *args)
-
-def get_user_input_string(user_input: str) -> str:
-    """ Debug trace string format helper """
-    return "WITH INPUT " + user_input if len(user_input) > 0 else ""
+from queryx_client_common import DATABASE_FOLDER
+from queryx_client_common import c, print_trace, print_debug, print_info, print_error
+from queryx_client_common import get_authorization_token, get_name
+from queryx_client_common import init_requests, send_request
 
 #################
 ### CONSTANTS ###
 #################
 
-QUERYX_WEBSITE = "https://queryx.eu/"
-QUERYX_AUTH_SERVER ="https://app.queryx.eu/#/profil#ppage-api-key"
-DEFAULT_CONFIG_FILE = "./queryx_client_config.yaml"
 SCHEMA_SEMANTIC_KEY = 'businessRules'
-EMPTY_AUTHORIZATION_TOKEN = "APIKEY.00000000000000000000000000000000"
-DATABASE_FOLDER = '../data'
-
-##########################
-### BACKEND PARAMETERS ###
-##########################
-
-BACKEND_SERVER_URL = "https://api-prod.queryx.eu/be"
-AUTHORIZATION_TOKEN = EMPTY_AUTHORIZATION_TOKEN
 
 ###############################
 ### STATE MACHINE VARIABLES ###
@@ -123,9 +50,9 @@ QUESTION_QUERY_HISTORY = []
 ### MISC FUNCTIONS ###
 ######################
 
-def get_name(file_name: str) -> str:
-    """ Return name from file name, ie. without path and extension """
-    return os.path.splitext(os.path.basename(file_name))[0]
+def get_user_input_string(user_input: str) -> str:
+    """ Debug trace string format helper """
+    return "WITH INPUT " + user_input if len(user_input) > 0 else ""
 
 def handle_query(question: str, response: dict) -> None:
     """ Print SQL query response, and save it in history """
@@ -138,70 +65,9 @@ def handle_query(question: str, response: dict) -> None:
         print_info(c.Fore.MAGENTA + response['answer'] + c.Fore.RESET)
     print()
 
-#########################
-### NETWORK FUNCTIONS ###
-#########################
-
-HTTP_REQUEST_SESSION = None
-
-def init_requests():
-    """ Prepare HTTP requests """
-
-    auth_header = {"authorization": AUTHORIZATION_TOKEN}
-
-    global HTTP_REQUEST_SESSION
-    HTTP_REQUEST_SESSION = requests.Session()
-    HTTP_REQUEST_SESSION.headers.update(auth_header) # unnecessary for ping request, but won't hurt
-
-def send_request(method: str,
-                 endpoint: str,
-                 uuid: str=None,
-                 query_args: list[str]=None,
-                 payload: dict=None) -> dict:
-    """ Send HTTP request to QueryX backend server, and check response """
-
-    method_dict = {
-        'get': HTTP_REQUEST_SESSION.get,
-        'post': HTTP_REQUEST_SESSION.post,
-        'delete': HTTP_REQUEST_SESSION.delete,
-    }
-
-    if method not in method_dict:
-        # This is more an assert than a user error
-        print_error(f"method {method} is not supported")
-        return None
-
-    answer = None
-    try:
-        url = f"{BACKEND_SERVER_URL}/{endpoint}"
-        if uuid is not None:
-            url += "/" + uuid
-        if query_args is not None:
-            arg_separator = "?"
-            while len(query_args) > 0:
-                query_arg = query_args.pop(0)
-                url += arg_separator + query_arg[0] + "=" + urllib.parse.quote_plus(query_arg[1])
-                arg_separator = "&"
-        print_request(f"send {method}({url})")
-        if payload is None:
-            response = method_dict[method](url)
-        else:
-            response = method_dict[method](url, json=payload)
-        print_debug("got", response)
-        if response.status_code == http.HTTPStatus.OK:
-            answer = response.json()
-            print_response(json.dumps(answer, indent=2))
-        else:
-            print_error(f"{method}({endpoint}) request returned {response.status_code}")
-            print_error(f"response = {json.dumps(response.json(), indent=2)}")
-    except requests.exceptions.ConnectionError as request_error:
-        print_error(f"{method}({endpoint}) request failed")
-        print_error(request_error)
-    return answer
-
-#########################
-### PROCESS FUNCTIONS ###
-#########################
+##############################
+### UNIT PROCESS FUNCTIONS ###
+##############################
 
 MESSAGE_NEED_DB_SELECTION = c.Fore.RED + "please select a database first" + c.Fore.RESET
 MESSAGE_NEED_DB_SET = c.Fore.RED + "please perform a 'set-db' request first" + c.Fore.RESET
@@ -693,6 +559,10 @@ QUERYX_CLIENT_MENU_DEFINITION = {
     ]),
 }
 
+#######################
+### MENU MANAGEMENT ###
+#######################
+
 QUERYX_CLIENT_MENU_LIVE = { }
 SUBMENU_KEY = SUBMENU_KEY_MAIN
 
@@ -703,6 +573,8 @@ def preview_description(key: str) -> str:
 
 def build_menu() -> None:
     """ Build the QueryX client live menu following menu definition """
+
+    add_database_list_to_menu(DATABASE_FOLDER)
 
     for submenu_key, submenu in QUERYX_CLIENT_MENU_DEFINITION.items():
         menu_item_list = submenu.keys()
@@ -721,10 +593,6 @@ def build_semantics_submenu() -> None:
     QUERYX_CLIENT_MENU_LIVE[SUBMENU_KEY_SEMANTICS] = TerminalMenu(menu_item_list,
                                                                   raise_error_on_interrupt=True,
                                                                   cycle_cursor=False)
-
-###############################
-### CONFIGURATION FUNCTIONS ###
-###############################
 
 def add_semantic_list_to_menu() -> None:
     """ Retrieve the list of semantic rules available in of current database schema
@@ -770,20 +638,6 @@ def add_database_list_to_menu(database_folder: str) -> None:
             ENDMENUITEM_KEY_M: SUBMENU_KEY_MAIN,
         }
 
-def setup() -> None:
-    """ Setup the QueryX configuration """
-
-    add_database_list_to_menu(DATABASE_FOLDER)
-
-    global BACKEND_SERVER_URL
-    global AUTHORIZATION_TOKEN
-    AUTHORIZATION_TOKEN = os.environ.get('QUERYX_API_KEY', '')
-    print_debug("server URL =", BACKEND_SERVER_URL)
-    print_debug("auth token =", AUTHORIZATION_TOKEN)
-
-    if AUTHORIZATION_TOKEN == EMPTY_AUTHORIZATION_TOKEN:
-        print_error("create an account on", QUERYX_AUTH_SERVER, "to get an API key")
-
 def get_menu_item_key(submenu: OrderedDict, index: int) -> str:
     """ Get key in sub-menu definition (ordered dictionary) based on index """
 
@@ -803,12 +657,10 @@ def read_user_input(prompt: str) -> str:
     """ Read user input from standard input """
     return input("$ " + prompt + " > ")
 
-def main(database_file: str=None) -> None:
+def menu_loop(database_file: str=None) -> None:
     """ Main menu loop """
 
-    setup()
     build_menu()
-    init_requests()
 
     if database_file is not None:
         CURRENT_DATABASE.file = database_file
@@ -867,17 +719,20 @@ if __name__ == "__main__":
     command_line_args = parser.parse_args()
 
     print(c.Fore.MAGENTA)
-    print("   #############################")
-    print("   ### Tuito's QueryX client ###")
-    print("   #############################")
+    print("   #########################################")
+    print("   ### Tuito's QueryX interactive client ###")
+    print("   #########################################")
     print(c.Fore.RESET)
-    print("Please visit", c.Fore.CYAN + QUERYX_WEBSITE + c.Fore.RESET)
-    print()
 
-    try:
-        main(command_line_args.database)
-    except KeyboardInterrupt:
-        print(c.Fore.RED + "user interruption" + c.Fore.RESET)
+    authorization_token = get_authorization_token()
+    if authorization_token:
 
-    print("\nexit", program_name, "program, bye\n")
-    sys.exit(0)
+        init_requests(authorization_token)
+        PRINT_HTTP = True
+
+        try:
+            menu_loop(command_line_args.database)
+        except KeyboardInterrupt:
+            print(c.Fore.RED + "user interruption" + c.Fore.RESET)
+
+        print("\nexit", program_name, "program, bye\n")
