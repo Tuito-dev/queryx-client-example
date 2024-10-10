@@ -91,6 +91,14 @@ PREDEFINED_DATABASE_STRUCTURE_LIST = [
     os.path.join(DATABASE_FOLDER, 'formula_1', 'formula_1.json'),
 ]
 
+def get_predefined_database_list() -> list:
+    """ Get list of predefined databases """
+
+    db_list = []
+    for i, db_structure in enumerate(PREDEFINED_DATABASE_STRUCTURE_LIST):
+        db_list.append(((i+1), get_name(db_structure)))
+    return db_list
+
 def get_predefined_database_index(argv) -> int:
     """ Get database index in list of predefined databases from command line arguments """
 

@@ -8,7 +8,8 @@ import sys
 import json
 
 from queryx_client_common import c, print_info, print_error, get_name
-from queryx_client_common import get_authorization_token, get_predefined_database_filename
+from queryx_client_common import get_predefined_database_list, get_predefined_database_filename
+from queryx_client_common import get_authorization_token
 from queryx_client_common import init_requests, send_request
 
 #################
@@ -16,6 +17,12 @@ from queryx_client_common import init_requests, send_request
 #################
 
 QUERYX_PROMPT = "Enter your question > "
+
+##############
+### CONFIG ###
+##############
+
+DELETE_CACHE = True
 
 #############################
 ### QUERY GENERATION LOOP ###
@@ -45,6 +52,13 @@ def generate_queries(db_structure: dict, db_name: str) -> None:
         return
 
     db_uuid = response['dbUuid']
+
+    if DELETE_CACHE:
+        print_info("Delete database cache")
+        response = send_request('delete', 'delete-db-cache', uuid=db_uuid)
+        if response is None:
+            print_error("cannot delete database cache")
+            return
 
     print_info("System ready\n")
 
@@ -82,6 +96,14 @@ if __name__ == "__main__":
     print("   ### Tuito's QueryX quick start client ###")
     print("   #########################################")
     print(c.Fore.RESET)
+
+    if len(sys.argv) > 1 and sys.argv[1] == "db":
+        db_list = get_predefined_database_list()
+        print("Available databases:")
+        for db in db_list:
+            print("  ", c.Fore.CYAN + str(db[0]) + c.Fore.RESET, "-", db[1])
+        print()
+        sys.exit(0)
 
     authorization_token = get_authorization_token()
     if authorization_token:
